@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "SPAlertController"
-  s.version      =  "4.0.0"
+  s.version      =  "4.0.1"
   s.summary      = "提醒对话框."
 
   # This description is used to generate tags and improve search results.
@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
 			   说明:4.0.0适配了深色模式
                      DESC
 
-  s.homepage     = "https://github.com/SPStore/SPAlertController"
+  s.homepage     = "https://github.com/xuzeyu/SPAlertController"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -80,7 +80,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/SPStore/SPAlertController.git", :tag => s.version }
+  s.source       = { :git => "https://github.com/xuzeyu/SPAlertController.git", :tag => s.version }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

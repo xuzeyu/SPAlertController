@@ -317,13 +317,21 @@
     return _textFields;
 }
 
+- (void)contentEdgeInsetsAdapt {
+    CGFloat safeTop    = self.contentEdgeInsets.top < 23 ? 23 : self.contentEdgeInsets.top;
+    CGFloat safeLeft   = self.contentEdgeInsets.left < 15 ? 15 : self.contentEdgeInsets.left;
+    CGFloat safeBottom = self.contentEdgeInsets.bottom < 23 ? 23 : self.contentEdgeInsets.bottom;
+    CGFloat safeRight  = self.contentEdgeInsets.right < 15 ? 15 : self.contentEdgeInsets.right;
+    _contentEdgeInsets = UIEdgeInsetsMake(safeTop, safeLeft, safeBottom, safeRight);
+}
+
 - (void)safeAreaInsetsDidChange {
     [super safeAreaInsetsDidChange];
-    CGFloat safeTop    = self.safeAreaInsets.top < 20 ? 20 : self.safeAreaInsets.top+10;
-    CGFloat safeLeft   = self.safeAreaInsets.left < 15 ? 15 : self.safeAreaInsets.left;
-    CGFloat safeBottom = self.safeAreaInsets.bottom < 20 ? 20 : self.safeAreaInsets.bottom+6;
-    CGFloat safeRight  = self.safeAreaInsets.right < 15 ? 15 : self.safeAreaInsets.right;
-    _contentEdgeInsets = UIEdgeInsetsMake(safeTop, safeLeft, safeBottom, safeRight);
+//    CGFloat safeTop    = self.safeAreaInsets.top < 20 ? 20 : self.safeAreaInsets.top+10;
+//    CGFloat safeLeft   = self.safeAreaInsets.left < 15 ? 15 : self.safeAreaInsets.left;
+//    CGFloat safeBottom = self.safeAreaInsets.bottom < 20 ? 20 : self.safeAreaInsets.bottom+6;
+//    CGFloat safeRight  = self.safeAreaInsets.right < 15 ? 15 : self.safeAreaInsets.right;
+    [self contentEdgeInsetsAdapt];
     // 这个block，主要是更新Label的最大预估宽度
     if (self.headerViewSfeAreaDidChangBlock) {
         self.headerViewSfeAreaDidChangBlock();
@@ -349,6 +357,7 @@
     UIImageView *imageView = _imageView;
     UIStackView *textFieldView = _textFieldView;
 
+    [self contentEdgeInsetsAdapt];
     CGFloat leftMargin   = self.contentEdgeInsets.left;
     CGFloat rightMargin  = self.contentEdgeInsets.right;
     CGFloat topMargin    = self.contentEdgeInsets.top;
@@ -401,7 +410,9 @@
         }
         // 子控件之间的垂直间距
         if (idx > 0) {
-            [titleLabelConstraints addObject:[NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:labels[idx - 1] attribute:NSLayoutAttributeBottom multiplier:1.f constant:7.5]];
+//            [titleLabelConstraints addObject:[NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:labels[idx - 1] attribute:NSLayoutAttributeBottom multiplier:1.f constant:7.5]];
+            //修改
+            [titleLabelConstraints addObject:[NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:labels[idx - 1] attribute:NSLayoutAttributeBottom multiplier:1.f constant:15]];
         }
     }];
     [NSLayoutConstraint activateConstraints:titleLabelConstraints];
@@ -1160,6 +1171,10 @@ UIEdgeInsets UIEdgeInsetsAddEdgeInsets(UIEdgeInsets i1,UIEdgeInsets i2) {
 }
 
 #pragma mark - Private
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
 - (instancetype)initWithTitle:(nullable NSString *)title message:(nullable NSString *)message customAlertView:(UIView *)customAlertView customHeaderView:(UIView *)customHeaderView customActionSequenceView:(UIView *)customActionSequenceView componentView:(UIView *)componentView preferredStyle:(SPAlertControllerStyle)preferredStyle animationType:(SPAlertAnimationType)animationType {
     self = [self init];
     _title = title;
@@ -1202,11 +1217,15 @@ UIEdgeInsets UIEdgeInsetsAddEdgeInsets(UIEdgeInsets i1,UIEdgeInsets i2) {
     return self;
 }
 
+- (UIModalPresentationStyle)modalPresentationStyle {
+    return UIModalPresentationCustom;
+}
+
 - (void)initialize {
     // 视图控制器定义它呈现视图控制器的过渡风格（默认为NO）
     self.providesPresentationContextTransitionStyle = YES;
     self.definesPresentationContext = YES;
-    self.modalPresentationStyle = UIModalPresentationCustom;
+//    self.modalPresentationStyle = UIModalPresentationCustom;
     self.transitioningDelegate = self;
     
     _titleFont = [UIFont boldSystemFontOfSize:18];
@@ -1642,6 +1661,21 @@ UIEdgeInsets UIEdgeInsetsAddEdgeInsets(UIEdgeInsets i1,UIEdgeInsets i2) {
     CGSize settingSize = customView.frame.size;
     CGSize fittingSize = [customView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     return CGSizeMake(MAX(settingSize.width, fittingSize.width), MAX(settingSize.height, fittingSize.height));
+}
+
+#pragma mark - 修改
+- (void)setHeaderActionLineHidden:(BOOL)isHidden {
+    self.headerActionLine.hidden = isHidden;
+}
+
+
+- (void)setMessageAlignment:(NSTextAlignment)messageAlignment {
+    _messageAlignment = messageAlignment;
+    self.headerView.messageLabel.textAlignment = _messageAlignment;
+}
+
+- (void)setContentEdgeInsets:(UIEdgeInsets)contentEdgeInsets {
+    self.headerView.contentEdgeInsets = contentEdgeInsets;
 }
 
 #pragma mark - system methods

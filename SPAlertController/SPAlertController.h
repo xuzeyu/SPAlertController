@@ -197,6 +197,12 @@ typedef NS_ENUM(NSInteger, SPAlertActionStyle) {
 + (instancetype)alertControllerWithPreferredStyle:(SPAlertControllerStyle)preferredStyle animationType:(SPAlertAnimationType)animationType customHeaderView:(nullable UIView *)customHeaderView NS_DEPRECATED_IOS(8_0, 8_0,"Use +alertControllerWithCustomHeaderView:preferredStyle:animationType:");
 + (instancetype)alertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message preferredStyle:(SPAlertControllerStyle)preferredStyle animationType:(SPAlertAnimationType)animationType customCenterView:(nullable UIView *)customCenterView NS_DEPRECATED_IOS(8_0, 8_0,"Use -insertComponentView:");
 + (instancetype)alertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message preferredStyle:(SPAlertControllerStyle)preferredStyle animationType:(SPAlertAnimationType)animationType customFooterView:(nullable UIView *)customFooterView NS_DEPRECATED_IOS(8_0, 8_0,"Use +alertControllerWithCustomActionSequenceView:title:message:preferredStyle:animationType:");
+
+#pragma mark - 修改
+- (void)setHeaderActionLineHidden:(BOOL)isHidden;
+/** 副标题对齐方式 */
+@property(nonatomic, assign) NSTextAlignment messageAlignment;
+@property (nonatomic, assign) UIEdgeInsets contentEdgeInsets;
 @end
 
 @protocol SPAlertControllerDelegate <NSObject>
