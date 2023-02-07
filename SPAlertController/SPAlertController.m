@@ -150,6 +150,7 @@
     action.titleEdgeInsets = self.titleEdgeInsets;
     action.handler = self.handler;
     action.propertyChangedBlock = self.propertyChangedBlock;
+    action.tapActionDismiss = self.tapActionDismiss;
     return action;
 }
 
@@ -163,6 +164,7 @@
     self.title = title;
     self.style = style;
     self.handler = handler;
+    self.tapActionDismiss = YES;
     if (style == SPAlertActionStyleDestructive) {
         self.titleColor = [SPColorStyle alertRedColor];
         self.titleFont = [UIFont systemFontOfSize:SP_ACTION_TITLE_FONTSIZE];
@@ -562,6 +564,10 @@
 }
 
 - (void)touchUpInside:(UIButton *)sender {
+    if (!self.action.tapActionDismiss) {
+        sender.backgroundColor = [SPColorStyle normalColor];
+    }
+    
     // 用函数指针实现_target调用_methodAction，相当于[_target performSelector:_methodAction withObject:self];但是后者会报警告
     SEL selector = _methodAction;
     IMP imp = [_target methodForSelector:selector];
@@ -709,7 +715,7 @@ UIEdgeInsets UIEdgeInsetsAddEdgeInsets(UIEdgeInsets i1,UIEdgeInsets i2) {
     UIStackView *stackView = self.stackView;
     SPAlertControllerActionView *actionView = stackView.arrangedSubviews[index];
     if (@available(iOS 11.0, *)) {
-       return [self.stackView customSpacingAfterView:actionView];
+        return [self.stackView customSpacingAfterView:actionView];
     } else {
         return 0.0;
     }
@@ -718,15 +724,43 @@ UIEdgeInsets UIEdgeInsetsAddEdgeInsets(UIEdgeInsets i1,UIEdgeInsets i2) {
 - (void)addAction:(SPAlertAction *)action {
     [self.actions addObject:action];
     UIStackView *stackView = self.stackView;
-
+    
     SPAlertControllerActionView *currentActionView = [[SPAlertControllerActionView alloc] init];
     currentActionView.action = action;
     [currentActionView addTarget:self action:@selector(buttonClickedInActionView:)];
     [stackView addArrangedSubview:currentActionView];
-
+    
     if (stackView.arrangedSubviews.count > 1) { // arrangedSubviews个数大于1，说明本次添加至少是第2次添加，此时要加一条分割线
         [self addLineForStackView:stackView];
     }
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)removeAction:(SPAlertAction *)action {
+    [self.actions removeObject:action];
+    UIStackView *stackView = self.stackView;
+    
+    if (stackView.arrangedSubviews.count > 1) { // arrangedSubviews个数大于1，说明本次添加至少是第2次添加，此时要加一条分割线
+        [self removeLineForStackView:stackView];
+    }
+    
+    for (SPAlertControllerActionView *actionView in stackView.arrangedSubviews) {
+        if (actionView.action == action) {
+            [stackView removeArrangedSubview:actionView];
+            break;
+        }
+    }
+    
+    for (UIView *subView in stackView.subviews) {
+        if ([subView isKindOfClass:[SPAlertControllerActionView class]]) {
+            SPAlertControllerActionView *actionView = (SPAlertControllerActionView *)subView;
+            if (actionView.action == action) {
+                [actionView removeFromSuperview];
+                break;
+            }
+        }
+    }
+    
     [self setNeedsUpdateConstraints];
 }
 
@@ -746,12 +780,43 @@ UIEdgeInsets UIEdgeInsetsAddEdgeInsets(UIEdgeInsets i1,UIEdgeInsets i2) {
     [self setNeedsUpdateConstraints];
 }
 
+- (void)removeCancelAction:(SPAlertAction *)action {
+    _cancelAction = nil;
+    [self.actions removeObject:action];
+    
+    for (SPAlertControllerActionView *cancelActionView in self.cancelView.subviews) {
+        if (cancelActionView.action == action) {
+            [cancelActionView removeFromSuperview];
+            break;
+        }
+    }
+    
+    if (self.cancelView.subviews.count == 0) {
+        [self.cancelView removeFromSuperview];
+        self.cancelView = nil;
+        [self.cancelActionLine removeFromSuperview];
+        self.cancelActionLine = nil;
+    }
+    [self setNeedsUpdateConstraints];
+}
+
 // 为stackView添加分割线(细节)
 - (void)addLineForStackView:(UIStackView *)stackView {
     SPInterfaceActionItemSeparatorView *actionLine = [[SPInterfaceActionItemSeparatorView alloc] init];
     actionLine.translatesAutoresizingMaskIntoConstraints = NO;
     // 这里必须用addSubview:，不能用addArrangedSubview:,因为分割线不参与排列布局
     [stackView addSubview:actionLine];
+}
+
+// 为stackView删除分割线(细节)
+- (void)removeLineForStackView:(UIStackView *)stackView {
+    for (UIView *subView in stackView.subviews) {
+        if ([subView isKindOfClass:[SPInterfaceActionItemSeparatorView class]]) {
+            SPInterfaceActionItemSeparatorView *line = (SPInterfaceActionItemSeparatorView *)subView;
+            [line removeFromSuperview];
+            break;
+        }
+    }
 }
 
 // 从一个数组筛选出不在另一个数组中的数组
@@ -1033,6 +1098,12 @@ UIEdgeInsets UIEdgeInsetsAddEdgeInsets(UIEdgeInsets i1,UIEdgeInsets i2) {
     NSMutableArray *actions = self.actions.mutableCopy;
     [actions addObject:action];
     self.actions = actions;
+    
+    BOOL isNeedLayoutChildViews = NO;
+    if (_actionSequenceView == nil) {
+        isNeedLayoutChildViews = YES;
+    }
+    
     if (self.preferredStyle == SPAlertControllerStyleAlert) { // alert样式不论是否为取消样式的按钮，都直接按顺序添加
         if (action.style != SPAlertActionStyleCancel) {
             [self.otherActions addObject:action];
@@ -1100,6 +1171,65 @@ UIEdgeInsets UIEdgeInsetsAddEdgeInsets(UIEdgeInsets i1,UIEdgeInsets i2) {
             [strongSelf.actionSequenceView setNeedsUpdateConstraints];
         }
     };
+    
+    if (isNeedLayoutChildViews) {
+        [self layoutChildViews];
+    }
+}
+
+// 删除action
+- (void)removeAction:(SPAlertAction *)action {
+    if (!action) return;
+    NSMutableArray *actions = self.actions.mutableCopy;
+    [actions removeObject:action];
+    self.actions = actions;
+    if (self.preferredStyle == SPAlertControllerStyleAlert) { // alert样式不论是否为取消样式的按钮，都直接按顺序添加
+        if (action.style != SPAlertActionStyleCancel) {
+            [self.otherActions removeObject:action];
+        }
+        [self.actionSequenceView removeAction:action];
+    } else { // actionSheet样式
+        if (action.style == SPAlertActionStyleCancel) { // 如果是取消样式的按钮
+            [self.actionSequenceView removeCancelAction:action];
+        } else {
+            [self.otherActions removeObject:action];
+            [self.actionSequenceView removeAction:action];
+        }
+    }
+    
+    if (!self.isForceLayout) { // 如果为NO,说明外界没有设置actionAxis，此时按照默认方式排列
+        if (self.preferredStyle == SPAlertControllerStyleAlert) {
+            if (self.actions.count > _maxNumberOfActionHorizontalArrangementForAlert) { // alert样式下，action的个数大于2时垂直排列,这里不等式右边写_maxNumberOfActionHorizontalArrangementForAlert是为了让被废弃的_maxNumberOfActionHorizontalArrangementForAlert依然生效
+                _actionAxis = UILayoutConstraintAxisVertical; // 本框架任何一处都不允许调用actionAxis的setter方法，如果调用了则无法判断是外界调用还是内部调用
+                [self updateActionAxis];
+            } else { // action的个数小于等于2，action水平排列
+                _actionAxis = UILayoutConstraintAxisHorizontal;
+                [self updateActionAxis];
+            }
+        } else { // actionSheet样式下默认垂直排列
+            _actionAxis = UILayoutConstraintAxisVertical;
+            [self updateActionAxis];
+            
+        }
+    } else {
+        [self updateActionAxis];
+    }
+    action.propertyChangedBlock = nil;
+    
+    if (self.actionSequenceView.stackView.arrangedSubviews.count == 0) {
+        [self.actionSequenceView setNeedsUpdateConstraints];
+        [self.actionSequenceView removeFromSuperview];
+        self.actionSequenceView = nil;
+        self.actionSequenceViewConstraints = nil;
+        self.headerActionLine = nil;
+    }
+}
+
+// 清空action
+- (void)clearActions {
+    for (SPAlertAction *action in self.actions) {
+        [self removeAction:action];
+    }
 }
 
 // 添加文本输入框
@@ -2102,8 +2232,10 @@ UIEdgeInsets UIEdgeInsetsAddEdgeInsets(UIEdgeInsets i1,UIEdgeInsets i2) {
         actionSequenceView.translatesAutoresizingMaskIntoConstraints = NO;
         __weak typeof(self) weakSelf = self;
         actionSequenceView.buttonClickedInActionViewBlock = ^(NSInteger index) {
-            [weakSelf dismissViewControllerAnimated:YES completion:nil];
             SPAlertAction *action = weakSelf.actions[index];
+            if (action.tapActionDismiss) {
+                [weakSelf dismissViewControllerAnimated:YES completion:nil];
+            }
             if (action.handler) {
                 action.handler(action);
             }

@@ -62,6 +62,8 @@ typedef NS_ENUM(NSInteger, SPAlertActionStyle) {
 @property(nonatomic, strong) UIFont *titleFont;
 /** action的标题的内边距，如果在不改变字体的情况下想增大action的高度，可以设置该属性的top和bottom值,默认UIEdgeInsetsMake(0, 15, 0, 15) */
 @property(nonatomic, assign) UIEdgeInsets titleEdgeInsets;
+/** action 单击后退出对话框,默认为YES*/
+@property(nonatomic, assign) BOOL tapActionDismiss;
 
 /** 样式 */
 @property(nonatomic, readonly) SPAlertActionStyle style;
@@ -77,6 +79,8 @@ typedef NS_ENUM(NSInteger, SPAlertActionStyle) {
 + (instancetype)alertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message preferredStyle:(SPAlertControllerStyle)preferredStyle animationType:(SPAlertAnimationType)animationType;
 
 - (void)addAction:(SPAlertAction *)action;
+- (void)removeAction:(SPAlertAction *)action;
+- (void)clearActions;
 @property (nonatomic, readonly) NSArray<SPAlertAction *> *actions;
 
 /* 添加文本输入框

@@ -10,4 +10,5 @@ pod 'SPAlertController', :git => 'https://github.com/xuzeyu/SPAlertController.gi
 
 ## 修改
 4.0.1 设置按钮分割线可隐藏(setHeaderActionLineHidden:),设置内容对齐方式messageAlignment和内容边距contentEdgeInsets
+4.0.2 增加tapActionDismiss（action 单击后退出对话框,默认为YES）参数。增加addAction:，removeAction:,clearActions:方法
 
