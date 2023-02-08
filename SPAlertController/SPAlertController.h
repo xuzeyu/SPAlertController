@@ -62,7 +62,7 @@ typedef NS_ENUM(NSInteger, SPAlertActionStyle) {
 @property(nonatomic, strong) UIFont *titleFont;
 /** action的标题的内边距，如果在不改变字体的情况下想增大action的高度，可以设置该属性的top和bottom值,默认UIEdgeInsetsMake(0, 15, 0, 15) */
 @property(nonatomic, assign) UIEdgeInsets titleEdgeInsets;
-/** action 单击后退出对话框,默认为YES*/
+/** action 单击后是否退出对话框,默认为YES*/
 @property(nonatomic, assign) BOOL tapActionDismiss;
 
 /** 样式 */
