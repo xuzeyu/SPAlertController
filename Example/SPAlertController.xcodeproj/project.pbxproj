@@ -27,9 +27,7 @@
 		522C267D21D0D5B2004EBDEB /* SendAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C267C21D0D5B2004EBDEB /* SendAlertView.m */; };
 		522C267F21D0D5F0004EBDEB /* SendAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 522C267E21D0D5F0004EBDEB /* SendAlertView.xib */; };
 		522C268621D0E40A004EBDEB /* send1.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 522C268121D0E409004EBDEB /* send1.jpeg */; };
-		5270519A22EE9FF50016D0DB /* SPAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F6A5E921B6101D006AF8CC /* SPAlertController.m */; };
 		5270519B22EE9FF50016D0DB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F6A5C521B60F86006AF8CC /* main.m */; };
-		5270519C22EEAF000016D0DB /* SPAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F6A5E921B6101D006AF8CC /* SPAlertController.m */; };
 		5270519D22EEAF410016D0DB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F6A5B721B60F83006AF8CC /* AppDelegate.m */; };
 		5270519E22EEBC660016D0DB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F6A5C521B60F86006AF8CC /* main.m */; };
 		52CB4ACC21B616E400B6090B /* MyCenterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52CB4AB321B616E400B6090B /* MyCenterView.m */; };
@@ -50,6 +48,7 @@
 		52F6A5DB21B60F86006AF8CC /* SPAlertControllerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F6A5DA21B60F86006AF8CC /* SPAlertControllerUITests.m */; };
 		BB05FF082455887700950629 /* UIColor+DarkMode.m in Sources */ = {isa = PBXBuildFile; fileRef = BB05FF072455887700950629 /* UIColor+DarkMode.m */; };
 		BB5EA69D2457C75E005AE698 /* send0.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = BB5EA69C2457C75E005AE698 /* send0.jpeg */; };
+		FD4F5D502993831100ADE501 /* SPAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD4F5D4E2993831100ADE501 /* SPAlertController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,11 +129,11 @@
 		52F6A5D621B60F86006AF8CC /* SPAlertControllerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SPAlertControllerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		52F6A5DA21B60F86006AF8CC /* SPAlertControllerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPAlertControllerUITests.m; sourceTree = "<group>"; };
 		52F6A5DC21B60F86006AF8CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		52F6A5E921B6101D006AF8CC /* SPAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPAlertController.m; sourceTree = "<group>"; };
-		52F6A5EA21B6101D006AF8CC /* SPAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPAlertController.h; sourceTree = "<group>"; };
 		BB05FF062455887700950629 /* UIColor+DarkMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+DarkMode.h"; sourceTree = "<group>"; };
 		BB05FF072455887700950629 /* UIColor+DarkMode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+DarkMode.m"; sourceTree = "<group>"; };
 		BB5EA69C2457C75E005AE698 /* send0.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = send0.jpeg; sourceTree = "<group>"; };
+		FD4F5D4E2993831100ADE501 /* SPAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPAlertController.m; sourceTree = "<group>"; };
+		FD4F5D4F2993831100ADE501 /* SPAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPAlertController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -309,7 +308,7 @@
 		52F6A5B521B60F83006AF8CC /* SPAlertController */ = {
 			isa = PBXGroup;
 			children = (
-				52F6A5E821B6101D006AF8CC /* SPAlertController */,
+				FD4F5D4D2993831100ADE501 /* SPAlertController */,
 				52F6A5B621B60F83006AF8CC /* AppDelegate.h */,
 				52F6A5B721B60F83006AF8CC /* AppDelegate.m */,
 				52F6A5B921B60F83006AF8CC /* ViewController.h */,
@@ -345,13 +344,14 @@
 			path = SPAlertControllerUITests;
 			sourceTree = "<group>";
 		};
-		52F6A5E821B6101D006AF8CC /* SPAlertController */ = {
+		FD4F5D4D2993831100ADE501 /* SPAlertController */ = {
 			isa = PBXGroup;
 			children = (
-				52F6A5EA21B6101D006AF8CC /* SPAlertController.h */,
-				52F6A5E921B6101D006AF8CC /* SPAlertController.m */,
+				FD4F5D4F2993831100ADE501 /* SPAlertController.h */,
+				FD4F5D4E2993831100ADE501 /* SPAlertController.m */,
 			);
-			path = SPAlertController;
+			name = SPAlertController;
+			path = ../../SPAlertController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -503,10 +503,10 @@
 			files = (
 				5270519E22EEBC660016D0DB /* main.m in Sources */,
 				5270519D22EEAF410016D0DB /* AppDelegate.m in Sources */,
-				5270519C22EEAF000016D0DB /* SPAlertController.m in Sources */,
 				522C267A21D0D0B7004EBDEB /* SPTextView.m in Sources */,
 				090BCB9221CEA18300057E1F /* PopView.m in Sources */,
 				52CB4ACF21B616E400B6090B /* ShoppingCartItem.m in Sources */,
+				FD4F5D502993831100ADE501 /* SPAlertController.m in Sources */,
 				52F6A5BB21B60F83006AF8CC /* ViewController.m in Sources */,
 				522C267D21D0D5B2004EBDEB /* SendAlertView.m in Sources */,
 				52CB4AD321B616E400B6090B /* PassWordView.m in Sources */,
@@ -529,7 +529,6 @@
 			files = (
 				52F6A5D021B60F86006AF8CC /* SPAlertControllerTests.m in Sources */,
 				5270519B22EE9FF50016D0DB /* main.m in Sources */,
-				5270519A22EE9FF50016D0DB /* SPAlertController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
