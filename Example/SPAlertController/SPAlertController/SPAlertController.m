@@ -127,7 +127,6 @@
 @interface SPAlertAction()
 
 @property (nonatomic, assign) SPAlertActionStyle style;
-@property (nonatomic, copy) void (^handler)(SPAlertAction *action);
 // 当在addAction之后设置action属性时,会回调这个block,设置相应控件的字体、颜色等
 // 如果没有这个block，那使用时，只有在addAction之前设置action的属性才有效
 @property (nonatomic, copy) void (^propertyChangedBlock)(SPAlertAction *action, BOOL needUpdateConstraints);

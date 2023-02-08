@@ -46,6 +46,8 @@ typedef NS_ENUM(NSInteger, SPAlertActionStyle) {
 
 /** action的标题 */
 @property(nullable, nonatomic, copy) NSString *title;
+/** action点击的回调*/
+@property (nonatomic, copy) void (^handler)(SPAlertAction *action);
 /** action的富文本标题 */
 @property(nullable, nonatomic, copy) NSAttributedString *attributedTitle;
 /** action的图标，位于title的左边 */
