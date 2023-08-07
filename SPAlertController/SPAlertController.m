@@ -1710,24 +1710,32 @@ UIEdgeInsets UIEdgeInsetsAddEdgeInsets(UIEdgeInsets i1,UIEdgeInsets i2) {
         self.headerView.imageView.tintColor = _imageTintColor;
         [self.headerView setNeedsUpdateConstraints];
     }
+    
+    self.headerView.titleLabel.font = _titleFont;
+    self.headerView.titleLabel.textColor = _titleColor;
+    self.headerView.titleLabel.textAlignment = _titleTextAlignment;
     if(self.attributedTitle.length) {
         self.headerView.titleLabel.attributedText = self.attributedTitle;
         [self setupPreferredMaxLayoutWidthForLabel:self.headerView.titleLabel];
     } else if(self.title.length) {
         self.headerView.titleLabel.text = _title;
-        self.headerView.titleLabel.font = _titleFont;
-        self.headerView.titleLabel.textColor = _titleColor;
-        self.headerView.titleLabel.textAlignment = _titleTextAlignment;
+//        self.headerView.titleLabel.font = _titleFont;
+//        self.headerView.titleLabel.textColor = _titleColor;
+//        self.headerView.titleLabel.textAlignment = _titleTextAlignment;
         [self setupPreferredMaxLayoutWidthForLabel:self.headerView.titleLabel];
     }
+    
+    self.headerView.messageLabel.font = _messageFont;
+    self.headerView.messageLabel.textColor = _messageColor;
+    self.headerView.messageLabel.textAlignment = _messageTextAlignment;
     if (self.attributedMessage.length) {
         self.headerView.messageLabel.attributedText = self.attributedMessage;
         [self setupPreferredMaxLayoutWidthForLabel:self.headerView.messageLabel];
     } else if (self.message.length) {
         self.headerView.messageLabel.text = _message;
-        self.headerView.messageLabel.font = _messageFont;
-        self.headerView.messageLabel.textColor = _messageColor;
-        self.headerView.messageLabel.textAlignment = _messageTextAlignment;
+//        self.headerView.messageLabel.font = _messageFont;
+//        self.headerView.messageLabel.textColor = _messageColor;
+//        self.headerView.messageLabel.textAlignment = _messageTextAlignment;
         [self setupPreferredMaxLayoutWidthForLabel:self.headerView.messageLabel];
     }
 }
