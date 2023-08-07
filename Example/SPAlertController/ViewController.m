@@ -120,6 +120,7 @@
         NSLog(@"点击了第3个");
     }];
     action3.titleColor = SPColorRGBA(30, 170, 40, 1);
+    alertController.message;
     
     [alertController addAction:action1];
     [alertController addAction:action2];

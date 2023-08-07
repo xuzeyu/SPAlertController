@@ -1359,9 +1359,9 @@ UIEdgeInsets UIEdgeInsetsAddEdgeInsets(UIEdgeInsets i1,UIEdgeInsets i2) {
     
     _titleFont = [UIFont boldSystemFontOfSize:18];
     _titleColor = [SPColorStyle lightBlack_DarkWhiteColor];
-    _messageFont = [UIFont systemFontOfSize:16];
+    _messageFont = [UIFont systemFontOfSize:15];
     _messageColor = [SPColorStyle grayColor];
-    _textAlignment = NSTextAlignmentCenter;
+    _titleTextAlignment = _messageTextAlignment = NSTextAlignmentCenter;
     _imageLimitSize = CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX);
     _cornerRadiusForAlert = 6.0;
     _backgroundViewAppearanceStyle = -1;
@@ -1717,7 +1717,7 @@ UIEdgeInsets UIEdgeInsetsAddEdgeInsets(UIEdgeInsets i1,UIEdgeInsets i2) {
         self.headerView.titleLabel.text = _title;
         self.headerView.titleLabel.font = _titleFont;
         self.headerView.titleLabel.textColor = _titleColor;
-        self.headerView.titleLabel.textAlignment = _textAlignment;
+        self.headerView.titleLabel.textAlignment = _titleTextAlignment;
         [self setupPreferredMaxLayoutWidthForLabel:self.headerView.titleLabel];
     }
     if (self.attributedMessage.length) {
@@ -1727,7 +1727,7 @@ UIEdgeInsets UIEdgeInsetsAddEdgeInsets(UIEdgeInsets i1,UIEdgeInsets i2) {
         self.headerView.messageLabel.text = _message;
         self.headerView.messageLabel.font = _messageFont;
         self.headerView.messageLabel.textColor = _messageColor;
-        self.headerView.messageLabel.textAlignment = _textAlignment;
+        self.headerView.messageLabel.textAlignment = _messageTextAlignment;
         [self setupPreferredMaxLayoutWidthForLabel:self.headerView.messageLabel];
     }
 }
@@ -1797,10 +1797,9 @@ UIEdgeInsets UIEdgeInsetsAddEdgeInsets(UIEdgeInsets i1,UIEdgeInsets i2) {
     self.headerActionLine.hidden = isHidden;
 }
 
-
-- (void)setMessageAlignment:(NSTextAlignment)messageAlignment {
-    _messageAlignment = messageAlignment;
-    self.headerView.messageLabel.textAlignment = _messageAlignment;
+- (void)setMessageTextAlignment:(NSTextAlignment)messageAlignment {
+    _messageTextAlignment = messageAlignment;
+    self.headerView.messageLabel.textAlignment = _messageTextAlignment;
 }
 
 - (void)setContentEdgeInsets:(UIEdgeInsets)contentEdgeInsets {
@@ -1947,10 +1946,9 @@ UIEdgeInsets UIEdgeInsetsAddEdgeInsets(UIEdgeInsets i1,UIEdgeInsets i2) {
     }
 }
 
-- (void)setTextAlignment:(NSTextAlignment)textAlignment {
-    _textAlignment = textAlignment;
-    self.headerView.titleLabel.textAlignment = _textAlignment;
-    self.headerView.messageLabel.textAlignment = _textAlignment;
+- (void)setTitleTextAlignment:(NSTextAlignment)titleTextAlignment {
+    _titleTextAlignment = titleTextAlignment;
+    self.headerView.titleLabel.textAlignment = _titleTextAlignment;
 }
 
 - (void)setIcon:(UIImage *)image {

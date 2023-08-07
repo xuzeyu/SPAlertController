@@ -110,8 +110,8 @@ typedef NS_ENUM(NSInteger, SPAlertActionStyle) {
 @property(nonatomic, strong) UIColor *messageColor;
 /** 副标题字体,默认16,未加粗 */
 @property(nonatomic, strong) UIFont *messageFont;
-/** 对齐方式(包括主标题和副标题) */
-@property(nonatomic, assign) NSTextAlignment textAlignment;
+/** 主标题对齐方式 */
+@property(nonatomic, assign) NSTextAlignment titleTextAlignment;
 /** 头部图标的限制大小,默认无穷大 */
 @property (nonatomic, assign) CGSize imageLimitSize;
 /** 图片的tintColor,当外部的图片使用了UIImageRenderingModeAlwaysTemplate时,该属性可起到作用 */
@@ -160,6 +160,11 @@ typedef NS_ENUM(NSInteger, SPAlertActionStyle) {
 - (void)insertComponentView:(nonnull UIView *)componentView;
 
 
+// ----------------------------------------------My custom -----------------------------------------------------
+- (void)setHeaderActionLineHidden:(BOOL)isHidden;
+@property(nonatomic, assign) NSTextAlignment messageTextAlignment;///<内容对齐方式
+@property (nonatomic, assign) UIEdgeInsets contentEdgeInsets;///<四边间距
+
 // ---------------------------------------------- custom -----------------------------------------------------
 /**
  创建控制器(自定义整个对话框)
@@ -203,12 +208,6 @@ typedef NS_ENUM(NSInteger, SPAlertActionStyle) {
 + (instancetype)alertControllerWithPreferredStyle:(SPAlertControllerStyle)preferredStyle animationType:(SPAlertAnimationType)animationType customHeaderView:(nullable UIView *)customHeaderView NS_DEPRECATED_IOS(8_0, 8_0,"Use +alertControllerWithCustomHeaderView:preferredStyle:animationType:");
 + (instancetype)alertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message preferredStyle:(SPAlertControllerStyle)preferredStyle animationType:(SPAlertAnimationType)animationType customCenterView:(nullable UIView *)customCenterView NS_DEPRECATED_IOS(8_0, 8_0,"Use -insertComponentView:");
 + (instancetype)alertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message preferredStyle:(SPAlertControllerStyle)preferredStyle animationType:(SPAlertAnimationType)animationType customFooterView:(nullable UIView *)customFooterView NS_DEPRECATED_IOS(8_0, 8_0,"Use +alertControllerWithCustomActionSequenceView:title:message:preferredStyle:animationType:");
-
-#pragma mark - 修改
-- (void)setHeaderActionLineHidden:(BOOL)isHidden;
-/** 副标题对齐方式 */
-@property(nonatomic, assign) NSTextAlignment messageAlignment;
-@property (nonatomic, assign) UIEdgeInsets contentEdgeInsets;
 @end
 
 @protocol SPAlertControllerDelegate <NSObject>
